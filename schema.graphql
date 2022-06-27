@@ -1,0 +1,12 @@
+type LogStake @entity {
+  id: ID!
+  user: Bytes!
+  itemId: BigInt! 
+  pubKey: Bytes! 
+  deposit: BigInt! 
+  timeStamp: BigInt! 
+  referral: String! 
+}
+type Staker @entity {
+  id: Bytes!
+}

@@ -1,0 +1,24 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: SWNFTUpgrade
+    network: goerli
+    source:
+      address: '0xF0aA6398B9f48E264174FAd36777DD8cD3993ff4'
+      abi: SWNFTUpgrade
+      startBlock: 7112930
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - LogStake
+      abis:
+        - name: SWNFTUpgrade
+          file: ./abis/SWNFTUpgrade.json
+      eventHandlers:
+        - event: LogStake(indexed address,indexed uint256,indexed bytes,uint256,uint256,string)
+          handler: handleLogStake
+      file: ./src/swnft-upgrade.ts
