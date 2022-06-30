@@ -1,12 +1,19 @@
 type LogStake @entity {
   id: ID!
-  user: Bytes!
-  itemId: BigInt! 
-  pubKey: Bytes! 
-  deposit: BigInt! 
-  timeStamp: BigInt! 
-  referral: String! 
+  user: User!
+  itemId: BigInt!
+  pubKey: Bytes!
+  deposit: BigInt!
+  timeStamp: BigInt!
+  referral: Referral!
 }
-type Staker @entity {
+type User @entity {
   id: Bytes!
+  totalStakeAmount: BigInt!
+  nodeOperator: Boolean!
+  itemIds: [BigInt!]
+}
+type Referral @entity {
+  id: String!
+  totalAmount: BigInt!
 }

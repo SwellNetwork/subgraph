@@ -97,7 +97,7 @@ export class LogStake extends Entity {
   }
 }
 
-export class Staker extends Entity {
+export class User extends Entity {
   constructor(id: Bytes) {
     super();
     this.set("id", Value.fromBytes(id));
@@ -105,18 +105,18 @@ export class Staker extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save Staker entity without an ID");
+    assert(id != null, "Cannot save User entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.BYTES,
-        `Entities of type Staker must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type User must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("Staker", id.toBytes().toHexString(), this);
+      store.set("User", id.toBytes().toHexString(), this);
     }
   }
 
-  static load(id: Bytes): Staker | null {
-    return changetype<Staker | null>(store.get("Staker", id.toHexString()));
+  static load(id: Bytes): User | null {
+    return changetype<User | null>(store.get("User", id.toHexString()));
   }
 
   get id(): Bytes {
@@ -126,5 +126,81 @@ export class Staker extends Entity {
 
   set id(value: Bytes) {
     this.set("id", Value.fromBytes(value));
+  }
+
+  get totalStakeAmount(): BigInt {
+    let value = this.get("totalStakeAmount");
+    return value!.toBigInt();
+  }
+
+  set totalStakeAmount(value: BigInt) {
+    this.set("totalStakeAmount", Value.fromBigInt(value));
+  }
+
+  get nodeOperator(): boolean {
+    let value = this.get("nodeOperator");
+    return value!.toBoolean();
+  }
+
+  set nodeOperator(value: boolean) {
+    this.set("nodeOperator", Value.fromBoolean(value));
+  }
+
+  get itemIds(): Array<BigInt> | null {
+    let value = this.get("itemIds");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigIntArray();
+    }
+  }
+
+  set itemIds(value: Array<BigInt> | null) {
+    if (!value) {
+      this.unset("itemIds");
+    } else {
+      this.set("itemIds", Value.fromBigIntArray(<Array<BigInt>>value));
+    }
+  }
+}
+
+export class Referral extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Referral entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Referral must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Referral", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Referral | null {
+    return changetype<Referral | null>(store.get("Referral", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get totalAmount(): BigInt {
+    let value = this.get("totalAmount");
+    return value!.toBigInt();
+  }
+
+  set totalAmount(value: BigInt) {
+    this.set("totalAmount", Value.fromBigInt(value));
   }
 }
