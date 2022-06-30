@@ -1,5 +1,6 @@
 import { 
-  LogStake as LogStakeEvent
+  LogStake as LogStakeEvent,
+  SWNFTUpgrade
 } from '../generated/SWNFTUpgrade/SWNFTUpgrade'
 import { LogStake, User, Referral } from '../generated/schema'
 
@@ -10,6 +11,10 @@ export function handleLogStake(event: LogStakeEvent): void{
   }
   user.totalStakeAmount += event.params.deposit;
   user.itemIds.push(event.params.itemId);
+  if(!user.nodeOperator) {
+    let swNFTContract = SWNFTUpgrade.bind(event.address);
+    user.nodeOperator = swNFTContract.positions(event.params.itemId).getOperator();
+  }
   user.save();
 
   let referral = Referral.load(event.params.referral);
