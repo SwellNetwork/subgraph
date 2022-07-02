@@ -42,15 +42,6 @@ export class LogStake extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get user(): Bytes {
-    let value = this.get("user");
-    return value!.toBytes();
-  }
-
-  set user(value: Bytes) {
-    this.set("user", Value.fromBytes(value));
-  }
-
   get itemId(): BigInt {
     let value = this.get("itemId");
     return value!.toBigInt();
@@ -85,15 +76,6 @@ export class LogStake extends Entity {
 
   set timeStamp(value: BigInt) {
     this.set("timeStamp", Value.fromBigInt(value));
-  }
-
-  get referral(): string {
-    let value = this.get("referral");
-    return value!.toString();
-  }
-
-  set referral(value: string) {
-    this.set("referral", Value.fromString(value));
   }
 }
 
@@ -146,21 +128,13 @@ export class User extends Entity {
     this.set("nodeOperator", Value.fromBoolean(value));
   }
 
-  get itemIds(): Array<BigInt> | null {
+  get itemIds(): Array<BigInt> {
     let value = this.get("itemIds");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigIntArray();
-    }
+    return value!.toBigIntArray();
   }
 
-  set itemIds(value: Array<BigInt> | null) {
-    if (!value) {
-      this.unset("itemIds");
-    } else {
-      this.set("itemIds", Value.fromBigIntArray(<Array<BigInt>>value));
-    }
+  set itemIds(value: Array<BigInt>) {
+    this.set("itemIds", Value.fromBigIntArray(value));
   }
 }
 
