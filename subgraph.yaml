@@ -8,7 +8,7 @@ dataSources:
     source:
       address: '0xF0aA6398B9f48E264174FAd36777DD8cD3993ff4'
       abi: SWNFTUpgrade
-      startBlock: 7112930
+      startBlock: 7084686
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
