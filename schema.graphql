@@ -16,3 +16,7 @@ type Referral @entity {
   id: String!
   totalAmount: BigInt!
 }
+type Stats @entity {
+  id: String!
+  userCounter: BigInt!
+}

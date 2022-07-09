@@ -178,3 +178,44 @@ export class Referral extends Entity {
     this.set("totalAmount", Value.fromBigInt(value));
   }
 }
+
+export class Stats extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Stats entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Stats must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Stats", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Stats | null {
+    return changetype<Stats | null>(store.get("Stats", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get userCounter(): BigInt {
+    let value = this.get("userCounter");
+    return value!.toBigInt();
+  }
+
+  set userCounter(value: BigInt) {
+    this.set("userCounter", Value.fromBigInt(value));
+  }
+}

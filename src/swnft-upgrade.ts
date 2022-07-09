@@ -3,7 +3,7 @@ import {
   LogStake as LogStakeEvent,
   SWNFTUpgrade
 } from '../generated/SWNFTUpgrade/SWNFTUpgrade'
-import { LogStake, User, Referral } from '../generated/schema'
+import { LogStake, User, Referral, Stats } from '../generated/schema'
 
 export function handleLogStake(event: LogStakeEvent): void{
   let swNFTContract = SWNFTUpgrade.bind(event.address);
@@ -13,6 +13,13 @@ export function handleLogStake(event: LogStakeEvent): void{
     user.totalStakeAmount = BigInt.zero();
     user.nodeOperator = swNFTContract.positions(event.params.itemId).getOperator();
     user.itemIds = [event.params.itemId];
+
+    let stats = Stats.load("1");
+    if(!stats) {
+      stats = new Stats("1");
+      stats.userCounter = BigInt.zero();
+    }
+    stats.userCounter = stats.userCounter.plus(BigInt.fromI32(1));
   } else {
     if(!user.nodeOperator) {
       user.nodeOperator = swNFTContract.positions(event.params.itemId).getOperator();
