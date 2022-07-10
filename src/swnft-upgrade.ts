@@ -8,9 +8,9 @@ import { LogStake, User, Referral, Stats } from '../generated/schema'
 export function handleLogStake(event: LogStakeEvent): void{
   let swNFTContract = SWNFTUpgrade.bind(event.address);
 
-  let stats = Stats.load("1");
+  let stats = Stats.load("Swell-Stats");
   if(!stats) {
-    stats = new Stats("1");
+    stats = new Stats("Swell-Stats");
     stats.userCounter = BigInt.zero();
     stats.tvl = BigInt.zero();
   }
