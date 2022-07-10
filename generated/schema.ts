@@ -218,4 +218,13 @@ export class Stats extends Entity {
   set userCounter(value: BigInt) {
     this.set("userCounter", Value.fromBigInt(value));
   }
+
+  get tvl(): BigInt {
+    let value = this.get("tvl");
+    return value!.toBigInt();
+  }
+
+  set tvl(value: BigInt) {
+    this.set("tvl", Value.fromBigInt(value));
+  }
 }
