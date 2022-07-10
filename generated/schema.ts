@@ -77,6 +77,15 @@ export class LogStake extends Entity {
   set timeStamp(value: BigInt) {
     this.set("timeStamp", Value.fromBigInt(value));
   }
+
+  get tvl(): BigInt {
+    let value = this.get("tvl");
+    return value!.toBigInt();
+  }
+
+  set tvl(value: BigInt) {
+    this.set("tvl", Value.fromBigInt(value));
+  }
 }
 
 export class User extends Entity {

@@ -4,6 +4,7 @@ type LogStake @entity {
   pubKey: Bytes!
   deposit: BigInt!
   timeStamp: BigInt!
+  tvl: BigInt!
 }
 type User @entity {
   id: Bytes!

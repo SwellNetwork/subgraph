@@ -7,7 +7,7 @@ import { LogStake, User, Referral, Stats } from '../generated/schema'
 
 export function handleLogStake(event: LogStakeEvent): void{
   let swNFTContract = SWNFTUpgrade.bind(event.address);
-  
+
   let stats = Stats.load("1");
   if(!stats) {
     stats = new Stats("1");
@@ -50,6 +50,7 @@ export function handleLogStake(event: LogStakeEvent): void{
     log_stake.pubKey = event.params.pubKey;
     log_stake.deposit = event.params.deposit;
     log_stake.timeStamp = event.params.timeStamp;
+    log_stake.tvl = stats.tvl;
     //log_stake.referral = referral;
   }
   log_stake.save();
