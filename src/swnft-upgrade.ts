@@ -20,6 +20,7 @@ export function handleLogStake(event: LogStakeEvent): void{
       stats.userCounter = BigInt.zero();
     }
     stats.userCounter = stats.userCounter.plus(BigInt.fromI32(1));
+    stats.save();
   } else {
     if(!user.nodeOperator) {
       user.nodeOperator = swNFTContract.positions(event.params.itemId).getOperator();
