@@ -4,7 +4,7 @@ type LogStake @entity {
   pubKey: Bytes!
   deposit: BigInt!
   timeStamp: BigInt!
-  
+  tvl: BigInt!
 }
 type User @entity {
   id: Bytes!
@@ -15,4 +15,9 @@ type User @entity {
 type Referral @entity {
   id: String!
   totalAmount: BigInt!
+}
+type Stats @entity {
+  id: String!
+  userCounter: BigInt!
+  tvl: BigInt!
 }

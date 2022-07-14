@@ -3,16 +3,25 @@ import {
   LogStake as LogStakeEvent,
   SWNFTUpgrade
 } from '../generated/SWNFTUpgrade/SWNFTUpgrade'
-import { LogStake, User, Referral } from '../generated/schema'
+import { LogStake, User, Referral, Stats } from '../generated/schema'
 
 export function handleLogStake(event: LogStakeEvent): void{
   let swNFTContract = SWNFTUpgrade.bind(event.address);
+
+  let stats = Stats.load("Swell-Stats");
+  if(!stats) {
+    stats = new Stats("Swell-Stats");
+    stats.userCounter = BigInt.zero();
+    stats.tvl = BigInt.zero();
+  }
+
   let user = User.load(event.params.user);
   if(!user) {
     user = new User(event.params.user);
     user.totalStakeAmount = BigInt.zero();
     user.nodeOperator = swNFTContract.positions(event.params.itemId).getOperator();
     user.itemIds = [event.params.itemId];
+    stats.userCounter = stats.userCounter.plus(BigInt.fromI32(1));
   } else {
     if(!user.nodeOperator) {
       user.nodeOperator = swNFTContract.positions(event.params.itemId).getOperator();
@@ -20,9 +29,10 @@ export function handleLogStake(event: LogStakeEvent): void{
     user.itemIds.push(event.params.itemId);
   }
   user.totalStakeAmount = user.totalStakeAmount.plus(event.params.deposit);
-  
+  stats.tvl = stats.tvl.plus(event.params.deposit);
 //  
   user.save();
+  stats.save();
 
   let referral = Referral.load(event.params.referral);
   if(!referral) {
@@ -40,6 +50,7 @@ export function handleLogStake(event: LogStakeEvent): void{
     log_stake.pubKey = event.params.pubKey;
     log_stake.deposit = event.params.deposit;
     log_stake.timeStamp = event.params.timeStamp;
+    log_stake.tvl = stats.tvl;
     //log_stake.referral = referral;
   }
   log_stake.save();
